@@ -7,6 +7,7 @@ import JumbotronHome from "../components/JumbotronHome/jumbotronHome.js";
 import Login from "../components/Login/login";
 import SignUp from "../components/Signup/signup";
 import Welcome from "../components/Welcome/welcome";
+import { response } from "express";
 
 
 class Home extends Component {
@@ -67,6 +68,30 @@ class Home extends Component {
     console.log('button pressed')
     this.setState({ loggedIn: true });
   };
+
+  handleLogin(event){
+    event.preventDefault();
+    //give style to inputs for login if left blank
+    if (this.state.loginUser === "" || this.state.loginPassword === ""){
+      this.setState({inputBlank: true})
+    }else{
+      axios
+      .get(`http://localhost:4000/api/users/${this.state.loginUser}/${this.state.loginPassword}`)
+      .then(response => {
+        this.setState({incorrectLogin: false, inputBlank: false});
+        const user = {
+          id: response.data.id,
+          userName: response.data.user_name
+        };
+        // console.log(response);
+        this.useLocalStorage(JSON.stringify(user));
+      }).catch(
+        function() {
+          this.setState({incorrectLogin: true, inputBlank: true})
+        }.bind(this)
+      )
+    }
+  }
 
   handleNewUser(event) {
     event.preventDefault();
@@ -174,3 +199,27 @@ class Home extends Component {
 }
 
 export default Home;
+
+
+// handleLogin(event) {
+//   event.preventDefault();
+//   // give style to inputs for login if left blank
+//   if (this.state.loginUser === "" || this.state.loginPassword === ""){
+//     this.setState({inputBlank: true})
+//   }else{
+//     axios
+//       .get(`http://localhost:4000/api/users/${this.state.loginUser}/${this.state.loginPassword}`)
+//       .then(response => {
+//         this.setState({incorrectLogin: false, inputBlank: false});
+//         const user = {
+//           id: response.data.id,
+//           userName: response.data.user_name
+//         };
+//         this.useLocalStorage(JSON.stringify(user));
+//       }).catch(
+//         function() {
+//           this.setState({incorrectLogin: true, inputBlank: true})
+//         }.bind(this)
+//       )
+//   }
+// }

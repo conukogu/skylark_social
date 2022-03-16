@@ -223,7 +223,7 @@ ADD director_lastName VARCHAR(100);
 ALTER TABLE topFilms2 ADD COLUMN director_fullName VARCHAR(100);
 UPDATE topFilms2 SET director_fullName = CONCAT(director_firstName, ' ', director_lastName) WHERE id>0;
 
-// Deleate fullName column
+// Delete fullName column
 ALTER TABLE topFilms2
 DROP COLUMN director_fullName;
 
@@ -275,3 +275,126 @@ VALUES
 'T')
 
 ON DUPLICATE KEY UPDATE director_firstName=VALUES(director_firstName), director_lastName=VALUES(director_lastName);
+
+SELECT * FROM topFilms2 WHERE id>0  ORDER BY director_lastName DESC LIMIT 3;
+
+INSERT INTO topFilms2
+(title, rating, release_date, director_firstName, director_lastName)
+
+VALUES
+('Wuzz',
+'PG-13',
+2017,
+'U',
+'V')
+
+SELECT * FROM topFilms2 WHERE title REGEXP 'r$|s$|t$|u$|v$|w$|x$|y$|z$'
+DELETE FROM topFilms2 WHERE id>0 AND title REGEXP 'r$|s$|t$|u$|v$|w$|x$|y$|z$'
+
+
+
+
+
+
+
+
+
+CREATE TABLE topCars2(
+id INT AUTO_INCREMENT PRIMARY KEY,
+make VARCHAR(100),
+model VARCHAR(100),
+year INT
+);
+
+USE homework;
+
+SELECT * FROM topCars2;
+
+
+INSERT INTO topCars2
+(make, model, year)
+
+VALUES
+('Nissan',
+'Leaf',
+2017),
+
+('Kia',
+'Spectra',
+2008),
+
+('Honda',
+'Accord',
+2008),
+
+-- Three more cars all at once
+
+('Ford',
+'Model T',
+1908),
+
+('Tesla',
+'Cybertruck',
+3022),
+
+('Batman',
+'Batmobile',
+1941)
+
+ALTER TABLE topCars2
+ADD price INT,
+ADD color VARCHAR(100);
+
+
+INSERT INTO topCars2
+(id, price, color)
+
+VALUES
+(1,
+100,
+'blue'),
+
+(2,
+'800',
+'white'),
+
+(3,
+'200',
+'silver'),
+
+(4,
+1000,
+'grey'),
+
+(5,
+'10',
+'ultraviolet'),
+
+(6,
+'700',
+'black')
+
+ON DUPLICATE KEY UPDATE price=VALUES(price), color=VALUES(color);
+
+
+ALTER TABLE topCars2 ADD COLUMN make_and_model VARCHAR(100);
+UPDATE topCars2 SET make_and_model = CONCAT(make, ' ', model) WHERE id>0;
+
+
+INSERT INTO topCars2
+(make, model, year, price, color)
+
+VALUES
+('Nissan',
+'ClownCar',
+1952,
+130,
+'polkadotted');
+
+SELECT make, COUNT(*) AS amount
+FROM topCars2
+GROUP BY make;
+
+
+
+
